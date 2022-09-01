@@ -1,4 +1,4 @@
-@import "../../styles/var.less";
+@import '../../styles/var.less';
 
 .vc-mask {
   display: none;
@@ -7,10 +7,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0, 0);
+  background: rgba(0, 0, 0, 0);
   z-index: 10001;
-  -webkit-transition: background .3s;
-  transition: background .3s;
+  -webkit-transition: background 0.3s;
+  transition: background 0.3s;
   -webkit-tap-highlight-color: transparent;
   overflow-y: scroll;
 }
@@ -33,11 +33,10 @@
   // -webkit-transform: translate(0, 100%);
 
   // use `bottom` instead of `transform` to prevent animation fail in WeChat webview
-  transition: bottom .3s;
+  transition: bottom 0.3s;
 }
 
 .vc-toggle {
-
   .vc-switch {
     display: none;
   }
@@ -57,7 +56,7 @@
 // content
 .vc-content {
   background-color: var(--VC-BG-2);
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   position: absolute;
   top: (40em / @font);
@@ -85,7 +84,7 @@
 }
 .vc-plugin-empty:before,
 .vc-plugin-content:empty:before {
-  content: "Empty";
+  content: 'Empty';
   color: var(--VC-FG-1);
   position: absolute;
   top: 45%;
@@ -95,8 +94,6 @@
   font-size: (15em / @font);
   text-align: center;
 }
-
-
 
 // safe area
 @supports (bottom: constant(safe-area-inset-bottom)) or (bottom: env(safe-area-inset-bottom)) {

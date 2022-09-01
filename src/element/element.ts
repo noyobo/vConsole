@@ -67,6 +67,9 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     const root = this._generateVNode(document.body);
     root._isExpand = true;
     activedNode.set(root);
+
+    console.log(root);
+
     rootNode.set(root);
 
     // listen component
@@ -268,19 +271,24 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
           const name = elem.attributes[i].name;
           let value = elem.attributes[i].value;
 
-          if (!name.startsWith('meta:')) {
-            if (name === 'class') {
-              const prefix = elem.getAttribute('meta:class-prefix') || '';
-              if (prefix) {
-                value = uniqueArray(
-                  value.split(/\s+/).map((item) => {
-                    return item.replace(new RegExp('^' + prefix), '');
-                  })
-                ).join(' ');
-              }
-            }
-            node.attributes.push({ name: name, value: value || '' });
+          if (name === 'meta:vc-node') {
+            node._isHide = true;
           }
+          if (name === 'meta:vc-space') {
+            node._isSpace = true;
+          }
+
+          if (name === 'class') {
+            const prefix = elem.getAttribute('meta:class-prefix') || '';
+            if (prefix) {
+              value = uniqueArray(
+                value.split(/\s+/).map((item) => {
+                  return item.replace(new RegExp('^' + prefix), '');
+                })
+              ).join(' ');
+            }
+          }
+          node.attributes.push({ name: name, value: value || '' });
         }
       }
     }
