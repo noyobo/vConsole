@@ -11,6 +11,10 @@
   ],
   "main": "dist/vconsole.min.js",
   "typings": "dist/vconsole.min.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "webpack --mode=production --progress --env target=wx",
     "build:typings": "node ./build/build.typings.js",
