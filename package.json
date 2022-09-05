@@ -12,8 +12,7 @@
   "main": "dist/vconsole.min.js",
   "typings": "dist/vconsole.min.d.ts",
   "scripts": {
-    "build": "webpack --mode=production --progress --env target=web",
-    "build:wx": "webpack --mode=production --progress --env target=wx",
+    "build": "webpack --mode=production --progress --env target=wx",
     "build:typings": "node ./build/build.typings.js",
     "build:dev": "webpack --mode=development --progress",
     "watch": "webpack --mode=development --watch --progress",
