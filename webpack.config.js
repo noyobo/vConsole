@@ -17,9 +17,10 @@ module.exports = (env, argv) => {
         import: Path.resolve(__dirname, './src/vconsole.ts'),
         library: {
           // name: 'VConsole',
-          type: 'commonjs2'
+          // type: 'umd',
           // umdNamedDefine: true,
           // export: 'default'
+          type: 'commonjs2'
         }
         // globalObject: 'this || self'
       },
