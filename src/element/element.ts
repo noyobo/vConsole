@@ -1,9 +1,13 @@
-import MutationObserver from 'mutation-observer'
+import MutationObserver from 'mutation-observer';
 import { get } from 'svelte/store';
 import { VConsoleSveltePlugin } from '../lib/sveltePlugin';
 import ElementComp from './element.svelte';
 import { rootNode, activedNode } from './element.model';
 import type { IVConsoleNode } from './element.model';
+
+function uniqueArray(arr: any[]) {
+  return Array.from(new Set(arr));
+}
 
 /**
  * vConsole Element Panel
@@ -14,7 +18,7 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
   protected nodeMap: WeakMap<Node, IVConsoleNode>;
   // protected activedNode: IVConsoleNode;
 
-  constructor(id: string, name: string, renderProps = { }) {
+  constructor(id: string, name: string, renderProps = {}) {
     super(id, name, ElementComp, renderProps);
   }
 
@@ -42,15 +46,15 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
         global: false,
         onClick: (e) => {
           this._expandActivedNode();
-        },
+        }
       },
       {
         name: 'Collapse',
         global: false,
         onClick: (e) => {
           this._collapseActivedNode();
-        },
-      },
+        }
+      }
     ];
     callback(toolList);
   }
@@ -60,11 +64,13 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     this.nodeMap = new WeakMap();
 
     // init nodes
-    const root = this._generateVNode(document.documentElement);
+    const root = this._generateVNode(document.body);
     root._isExpand = true;
     activedNode.set(root);
-    rootNode.set(root);
 
+    console.log(root);
+
+    rootNode.set(root);
 
     // listen component
     this.compInstance.$on('toggleNode', (e) => {
@@ -84,7 +90,7 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     });
 
     // start observing
-    this.observer.observe(document.documentElement, {
+    this.observer.observe(document.body, {
       attributes: true,
       childList: true,
       characterData: true,
@@ -122,7 +128,9 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     }
     for (let i = 0; i < mutation.removedNodes.length; i++) {
       const childNode = this.nodeMap.get(mutation.removedNodes[i]);
-      if (!childNode) { continue; }
+      if (!childNode) {
+        continue;
+      }
       // find child node and remove it from parent
       for (let j = 0; j < parentNode.childNodes.length; j++) {
         if (parentNode.childNodes[j] === childNode) {
@@ -189,6 +197,16 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     this._refreshStore();
   }
 
+  protected _normalizeVNode(node: IVConsoleNode): IVConsoleNode {
+    // 小程序的 node 总是以 v- 开头
+    node.nodeName = node.nodeName.replace(/^v-/, '');
+    if (node.nodeName === 'body') {
+      node.nodeName = 'page';
+    }
+
+    return node;
+  }
+
   /**
    * Generate an VNode for rendering views. VNode will be updated if existing.
    * VNode will be stored in a WeakMap.
@@ -198,21 +216,21 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
       return undefined;
     }
 
-    const node: IVConsoleNode = {
+    let node: IVConsoleNode = {
       nodeType: elem.nodeType,
       nodeName: elem.nodeName.toLowerCase(),
       textContent: '',
       id: '',
       className: '',
       attributes: [],
-      childNodes: [],
+      childNodes: []
     };
+
+    node = this._normalizeVNode(node);
+
     this.nodeMap.set(elem, node);
-    
-    if (
-      node.nodeType == elem.TEXT_NODE || 
-      node.nodeType == elem.DOCUMENT_TYPE_NODE
-      ) {
+
+    if (node.nodeType == elem.TEXT_NODE || node.nodeType == elem.DOCUMENT_TYPE_NODE) {
       node.textContent = elem.textContent;
     }
 
@@ -239,6 +257,10 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     if (!node) {
       return;
     }
+    // page 不限制任何属性
+    if (node.nodeName === 'page') {
+      return;
+    }
     if (elem instanceof Element) {
       node.id = elem.id || '';
       node.className = elem.className || '';
@@ -246,10 +268,24 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
       if (elem.hasAttributes && elem.hasAttributes()) {
         node.attributes = [];
         for (let i = 0; i < elem.attributes.length; i++) {
-          node.attributes.push({
-            name: elem.attributes[i].name,
-            value: elem.attributes[i].value || '',
-          });
+          const name = elem.attributes[i].name;
+          let value = elem.attributes[i].value;
+
+          if (name === 'meta:vc-node') {
+            node._isHide = true;
+          }
+          if (name === 'meta:vc-space') {
+            node._isSpace = true;
+          }
+
+          if (name === 'class') {
+            const metaClass = elem.getAttribute('meta:class');
+            // 对于 class，如果有 meta:class，则使用 meta:class
+            if (metaClass) {
+              value = metaClass;
+            }
+          }
+          node.attributes.push({ name: name, value: value || '' });
         }
       }
     }
@@ -298,7 +334,8 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
   protected _isIgnoredNode(elem: Node) {
     // empty or line-break text
     if (elem.nodeType === elem.TEXT_NODE) {
-      if (elem.textContent.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$|\n+/g, '') === '') { // trim
+      if (elem.textContent.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$|\n+/g, '') === '') {
+        // trim
         return true;
       }
     } else if (elem.nodeType === elem.COMMENT_NODE) {
