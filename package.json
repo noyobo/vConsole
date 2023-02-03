@@ -1,8 +1,8 @@
 {
-  "name": "vconsole",
-  "version": "3.15.1",
+  "name": "@noyobo/vconsole",
+  "version": "3.14.7-rc.1",
   "description": "A lightweight, extendable front-end developer tool for mobile web page.",
-  "homepage": "https://github.com/Tencent/vConsole",
+  "homepage": "https://github.com/noyobo/vConsole",
   "files": [
     "dist/*",
     "build/vendor.d.ts",
@@ -11,9 +11,13 @@
   ],
   "main": "dist/vconsole.min.js",
   "typings": "dist/vconsole.min.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "webpack --mode=production --progress --env target=web",
-    "build:wx": "webpack --mode=production --progress --env target=wx",
+    "build:prod": "webpack --mode=production --progress --env target=wx",
     "build:typings": "node ./build/build.typings.js",
     "build:dev": "webpack --mode=development --progress",
     "watch": "webpack --mode=development --watch --progress",
@@ -33,7 +37,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Tencent/vConsole.git"
+    "url": "git+https://github.com/noyobo/vConsole.git"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.2",

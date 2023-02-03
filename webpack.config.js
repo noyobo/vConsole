@@ -20,14 +20,14 @@ module.exports = (env, argv) => {
         'Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.',
         'Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at',
         'http://opensource.org/licenses/MIT',
-        'Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.',
+        'Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.'
       ].join('\n'),
-      entryOnly: true,
+      entryOnly: true
     }),
     new Webpack.DefinePlugin({
       __VERSION__: JSON.stringify(pkg.version),
-      __TARGET__: JSON.stringify(__TARGET__),
-    }),
+      __TARGET__: JSON.stringify(__TARGET__)
+    })
   ];
   if (isDev) {
     plugins.push({
@@ -35,8 +35,8 @@ module.exports = (env, argv) => {
         compiler.hooks.done.tap('DeclarationEmitter', () => {
           execSync('npm run build:typings');
         });
-      },
-    })
+      }
+    });
   }
   if (noCoreJS) {
     const dummyModulePath = Path.resolve(__dirname, './build/dummy.js');
@@ -47,7 +47,7 @@ module.exports = (env, argv) => {
     mode: argv.mode,
     devtool: false,
     entry: {
-      vconsole: Path.resolve(__dirname, './src/vconsole.ts'),
+      vconsole: Path.resolve(__dirname, './src/vconsole.ts')
     },
     target: ['web', 'es5'],
     output: {
@@ -57,40 +57,38 @@ module.exports = (env, argv) => {
         name: 'VConsole',
         type: 'umd',
         umdNamedDefine: true,
-        export: "default",
+        export: 'default'
       },
-      globalObject: 'this || self',
+      globalObject: 'this || self'
     },
     resolve: {
       extensions: ['.ts', '.js', '.html', '.less', '.mjs', '.svelte'],
       alias: {
-        svelte: Path.resolve('node_modules', 'svelte'),
+        svelte: Path.resolve('node_modules', 'svelte')
       },
-      mainFields: ['svelte', 'browser', 'module', 'main'],
+      mainFields: ['svelte', 'browser', 'module', 'main']
     },
     module: {
       rules: [
         {
           test: /\.(js|ts)$/,
-          use: [
-            { loader: 'babel-loader' }
-          ],
+          use: [{ loader: 'babel-loader' }]
         },
         {
           test: /\.(less|css)$/i,
           use: [
             {
               loader: 'style-loader',
-              options: { injectType: 'lazyStyleTag' },
+              options: { injectType: 'lazyStyleTag' }
             },
             { loader: 'css-loader' },
             {
               loader: 'less-loader',
               options: {
-                lessOptions: { math: 'always' },
-              },
-            },
-          ],
+                lessOptions: { math: 'always' }
+              }
+            }
+          ]
         },
         {
           test: /\.(svelte)$/,
@@ -100,31 +98,31 @@ module.exports = (env, argv) => {
               loader: 'svelte-loader',
               options: {
                 preprocess: sveltePreprocess({
-                  sourceMap: isDev,
+                  sourceMap: isDev
                 }),
                 compilerOptions: {
                   dev: isDev,
-                  accessors: true,
+                  accessors: true
                 },
                 emitCss: true,
-                hotReload: false,
-              },
-            },
-          ],
+                hotReload: false
+              }
+            }
+          ]
         },
         {
           // required to prevent errors from Svelte on Webpack 5+, omit on Webpack 4
           test: /node_modules[\\/]svelte[\\/].*\.m?js$/,
           resolve: {
-            fullySpecified: false,
+            fullySpecified: false
           },
-          use: ['babel-loader'],
-        },
-      ],
+          use: ['babel-loader']
+        }
+      ]
     },
     stats: {
       colors: true,
-      errorDetails: true,
+      errorDetails: true
     },
     optimization: {
       minimize: !isDev,
@@ -133,14 +131,14 @@ module.exports = (env, argv) => {
           extractComments: false,
           terserOptions: {
             compress: {
-              pure_funcs: ['console.log'], // drop `console.log` only
-            },
-          },
-        }),
-      ],
+              pure_funcs: ['console.log'] // drop `console.log` only
+            }
+          }
+        })
+      ]
     },
     watchOptions: {
-      ignored: ['**/node_modules'],
+      ignored: ['**/node_modules']
     },
     plugins
   };
