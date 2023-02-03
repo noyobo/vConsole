@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy, onMount, createEventDispatcher } from 'svelte';
   import Stats from 'stats.js';
 
   import Style from './perf.less';
@@ -14,6 +14,8 @@
   onDestroy(() => {
     Style.unuse();
   });
+
+  const dispatch = createEventDispatcher();
 
   function openStats() {
     if (stats) {
@@ -55,27 +57,30 @@
         stats.update();
         statsFrame = requestAnimationFrame(loop);
       });
-      stats.dom.style.top = '100px';
+
+      stats.dom.style.top = '50px';
     }
+
+    dispatch('stats_toggle', { show: !!stats });
   }
 
   let isPauseLog = false;
 
-  function pauseLog() {
+  function toggleLog() {
     isPauseLog = !isPauseLog;
     let ev;
     if (isPauseLog) {
-      ev = new Event('vconsole_log_pause');
-      console.warn('Pause show console log');
+      ev = new Event('vconsole_log_pause', { bubbles: true });
     } else {
-      ev = new Event('vconsole_log_restore');
-      console.warn('Restore show console log');
+      ev = new Event('vconsole_log_restore', { bubbles: true });
     }
+    console.warn('Toggle log');
     document.dispatchEvent(ev);
+    dispatch('log_toggle', { pause: isPauseLog });
   }
 </script>
 
 <div class="wrapper">
   <button class="btn" on:click={openStats}>{stats ? 'Close' : 'Open'} FPS monitor</button>
-  <button class="btn" on:click={pauseLog}>{isPauseLog ? 'Restore' : 'Pause'} Log</button>
+  <button class="btn" on:click={toggleLog}>Toggle log</button>
 </div>
