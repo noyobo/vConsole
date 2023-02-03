@@ -55,6 +55,7 @@
         stats.update();
         statsFrame = requestAnimationFrame(loop);
       });
+      stats.dom.style.top = '100px';
     }
   }
 
@@ -75,6 +76,6 @@
 </script>
 
 <div class="wrapper">
-  <button class="btn" on:click={openStats}>{stats ? 'Open' : 'Close'} FPS monitor</button>
+  <button class="btn" on:click={openStats}>{stats ? 'Close' : 'Open'} FPS monitor</button>
   <button class="btn" on:click={pauseLog}>{isPauseLog ? 'Restore' : 'Pause'} Log</button>
 </div>
