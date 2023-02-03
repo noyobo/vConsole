@@ -68,8 +68,6 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     root._isExpand = true;
     activedNode.set(root);
 
-    console.log(root);
-
     rootNode.set(root);
 
     // listen component
@@ -198,8 +196,8 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
   }
 
   protected _normalizeVNode(node: IVConsoleNode): IVConsoleNode {
-    // 小程序的 node 总是以 v- 开头
-    node.nodeName = node.nodeName.replace(/^v-/, '');
+    // 小程序的 node v- 是 web-component t- 是自定义组件
+    node.nodeName = node.nodeName.replace(/^(v|t)-/, '');
     if (node.nodeName === 'body') {
       node.nodeName = 'page';
     }
