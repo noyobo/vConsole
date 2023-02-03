@@ -1,6 +1,6 @@
 {
   "name": "@noyobo/vconsole",
-  "version": "3.14.7-rc.1",
+  "version": "3.14.7-rc.2",
   "description": "A lightweight, extendable front-end developer tool for mobile web page.",
   "homepage": "https://github.com/noyobo/vConsole",
   "files": [
