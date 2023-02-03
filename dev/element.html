@@ -23,28 +23,31 @@
       <a onclick="_addChildComment()" href="javascript:;" class="weui_btn weui_btn_default">addChild: Comment</a>
     </div>
   </body>
+
   <script type="module">
     import '../dist/vconsole.min.js';
 
     window.vConsole = new window.VConsole({
       maxLogNumber: 1000,
       // disableLogScrolling: true,
-      defaultPlugins: ['element'],
+      defaultPlugins: ['element', 'perf'],
       onReady: () => {
         console.log('vConsole is ready.');
         setTimeout(() => {
-          vConsole.showPlugin('element');
+          vConsole.showPlugin('perf');
         });
       },
       onClearLog: () => {
         console.log('on clearLog');
       }
     });
+
+    vConsole.show();
   </script>
 
   <script>
     const divIdList = [];
-    for (let i = 0; i <script 20; i++) {
+    for (let i = 0; i < 20; i++) {
       const id = 'rand_' + i;
       _doAddDiv(id, 'body');
     }

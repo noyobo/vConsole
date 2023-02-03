@@ -32,6 +32,7 @@ import { VConsoleSystemPlugin } from '../log/system';
 import { VConsoleNetworkPlugin } from '../network/network';
 import { VConsoleElementPlugin } from '../element/element';
 import { VConsoleStoragePlugin } from '../storage/storage';
+import { VConsolePerfPlugin } from '../perf/perf';
 
 // built-in plugin exporters
 import { VConsoleLogExporter } from '../log/log.exporter';
@@ -60,6 +61,7 @@ export class VConsole {
   public static VConsoleNetworkPlugin: typeof VConsoleNetworkPlugin;
   public static VConsoleElementPlugin: typeof VConsoleElementPlugin;
   public static VConsoleStoragePlugin: typeof VConsoleStoragePlugin;
+  public static VConsolePerfPlugin: typeof VConsolePerfPlugin;
 
   constructor(opt?: VConsoleOptions) {
     if (!!VConsole.instance && VConsole.instance instanceof VConsole) {
@@ -73,7 +75,7 @@ export class VConsole {
       defaultPlugins: ['system', 'network', 'element', 'storage'],
       log: {},
       network: {},
-      storage: {},
+      storage: {}
     };
 
     // merge options
@@ -157,12 +159,13 @@ export class VConsole {
     const list = this.option.defaultPlugins;
     const plugins = {
       // 'default': { proto: VConsoleSystemPlugin, name: 'Log' },
-      'system': { proto: VConsoleSystemPlugin, name: 'System' },
+      system: { proto: VConsoleSystemPlugin, name: 'System' }
     };
     if (__TARGET__ === 'web') {
       plugins['network'] = { proto: VConsoleNetworkPlugin, name: 'Network' };
       plugins['element'] = { proto: VConsoleElementPlugin, name: 'Element' };
       plugins['storage'] = { proto: VConsoleStoragePlugin, name: 'Storage' };
+      plugins['perf'] = { proto: VConsolePerfPlugin, name: 'Perf' };
     }
     if (!!list && tool.isArray(list)) {
       for (let i = 0; i < list.length; i++) {
@@ -180,7 +183,7 @@ export class VConsole {
    * Init svelte component.
    */
   private _initComponent() {
-    if (! $.one(VCONSOLE_ID)) {
+    if (!$.one(VCONSOLE_ID)) {
       const switchX = <any>tool.getStorage('switch_x') * 1;
       const switchY = <any>tool.getStorage('switch_y') * 1;
 
@@ -190,7 +193,7 @@ export class VConsole {
       } else if (this.option.target instanceof HTMLElement) {
         target = this.option.target;
       }
-      if (! (target instanceof HTMLElement)) {
+      if (!(target instanceof HTMLElement)) {
         target = document.documentElement;
       }
       this.compInstance = new CoreCompClass({
@@ -198,9 +201,9 @@ export class VConsole {
         props: {
           switchButtonPosition: {
             x: switchX,
-            y: switchY,
-          },
-        },
+            y: switchY
+          }
+        }
       });
 
       // bind events
@@ -302,7 +305,7 @@ export class VConsole {
     // render tab (if it is a tab plugin then it should has tab-related events)
     plugin.trigger('renderTab', (tabboxHTML, options = {}) => {
       // render tabbar
-      const pluginInfo = this.compInstance.pluginList[plugin.id]
+      const pluginInfo = this.compInstance.pluginList[plugin.id];
       pluginInfo.hasTabPanel = true;
       pluginInfo.tabOptions = options;
       // render tabbox
@@ -313,7 +316,9 @@ export class VConsole {
     });
     // render top bar
     plugin.trigger('addTopBar', (btnList: IVConsoleTopbarOptions[]) => {
-      if (!btnList) { return; }
+      if (!btnList) {
+        return;
+      }
       const topbarList = [];
       for (let i = 0; i < btnList.length; i++) {
         const item = btnList[i];
@@ -322,7 +327,7 @@ export class VConsole {
           className: item.className || '',
           actived: !!item.actived,
           data: item.data,
-          onClick: item.onClick,
+          onClick: item.onClick
         });
       }
       this.compInstance.pluginList[plugin.id].topbarList = topbarList;
@@ -330,7 +335,9 @@ export class VConsole {
     });
     // render tool bar
     plugin.trigger('addTool', (toolList) => {
-      if (!toolList) { return; }
+      if (!toolList) {
+        return;
+      }
       const list = [];
       for (let i = 0; i < toolList.length; i++) {
         const item = toolList[i];
@@ -338,7 +345,7 @@ export class VConsole {
           name: item.name || 'Undefined',
           global: !!item.global,
           data: item.data,
-          onClick: item.onClick,
+          onClick: item.onClick
         });
       }
       this.compInstance.pluginList[plugin.id].toolbarList = list;
@@ -382,9 +389,15 @@ export class VConsole {
     const keys = Object.keys(pluginList).sort((a, b) => {
       const ia = this.option.pluginOrder.indexOf(a);
       const ib = this.option.pluginOrder.indexOf(b);
-      if (ia === ib) { return 0; }
-      if (ia === -1) { return 1; }
-      if (ib === -1) { return -1; }
+      if (ia === ib) {
+        return 0;
+      }
+      if (ia === -1) {
+        return 1;
+      }
+      if (ib === -1) {
+        return -1;
+      }
       return ia - ib;
     });
     const newList: typeof pluginList = {};
@@ -506,7 +519,7 @@ export class VConsole {
    * @example `setOption({ log: { maxLogNumber: 20 }})`: overwrite 'log' object.
    */
   public setOption(keyOrObj: any, value?: any) {
-    
+
     if (typeof keyOrObj === 'string') {
       // parse `a.b = val` to `a: { b: val }`
       const keys = keyOrObj.split('.');
@@ -560,9 +573,7 @@ export class VConsole {
     // remove component
     this.compInstance.$destroy();
   }
-
 } // END class
-
 
 // Export built-in plugins
 VConsole.VConsolePlugin = VConsolePlugin;
@@ -575,4 +586,5 @@ if (__TARGET__ === 'web') {
   VConsole.VConsoleNetworkPlugin = VConsoleNetworkPlugin;
   VConsole.VConsoleElementPlugin = VConsoleElementPlugin;
   VConsole.VConsoleStoragePlugin = VConsoleStoragePlugin;
+  VConsole.VConsolePerfPlugin = VConsolePerfPlugin;
 }
