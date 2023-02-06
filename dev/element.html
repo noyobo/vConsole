@@ -10,10 +10,11 @@
 
     <!-- <script type="module" src="../dist/vconsole.min.js"></script> -->
   </head>
+
   <body ontouchstart id="body">
     <v-view class="page_title" meta:bind:tap="abc" meta:capture-bind:touchstart="abc">v-view</v-view>
     <t-view class="page_title" data-alpha-beta="1" meta:mut-bind:tap="handleTap1">t-view</t-view>
-    <div id="page" class="page">
+    <div id="page" class="page" meta:vc-hide>
       <h1 id="title" class="page_title">Element</h1>
       <div id="text" class="weui_text_area">Hello World!</div>
       <a onclick="_changeAttr()" href="javascript:;" class="weui_btn weui_btn_default">changeAttr</a>
@@ -21,6 +22,7 @@
       <a onclick="_removeChild()" href="javascript:;" class="weui_btn weui_btn_default">removeChild</a>
       <a onclick="_addChild()" href="javascript:;" class="weui_btn weui_btn_default">addChild</a>
       <a onclick="_addChildComment()" href="javascript:;" class="weui_btn weui_btn_default">addChild: Comment</a>
+      <a onclick="_messagePanel()" href="javascript:;" class="weui_btn weui_btn_default">message channel panel</a>
     </div>
   </body>
 
@@ -115,6 +117,21 @@
       }, 1000);
       vConsole.show();
       vConsole.showPlugin('element');
+    }
+
+    function _messagePanel() {
+      const vConsole = window.vConsole;
+
+      const prefPlugin = vConsole.pluginList['perf'];
+
+      if (prefPlugin && prefPlugin.compInstance.panels.messageChannel) {
+        const panel = prefPlugin.compInstance.panels.messageChannel;
+        function loop() {
+          panel.update(Math.floor(Math.random() * 1000), 1000);
+          requestAnimationFrame(loop);
+        }
+        loop();
+      }
     }
   </script>
 </html>

@@ -236,6 +236,13 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
     if (elem.childNodes.length > 0) {
       node.childNodes = [];
       for (let i = 0; i < elem.childNodes.length; i++) {
+        const childNode = <HTMLElement>elem.childNodes[i];
+
+        // 过滤掉隐藏的节点
+        if(childNode && childNode.nodeType === 1) {
+          if (childNode.hasAttribute('meta:vc-hide') || childNode.tagName === 'SCRIPT')  continue;
+        }
+
         const child = this._generateVNode(elem.childNodes[i]);
         if (!child) {
           continue;

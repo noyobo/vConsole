@@ -2,18 +2,23 @@
   import { onDestroy, onMount, createEventDispatcher } from 'svelte';
   import Stats from 'stats.js';
 
-  import Style from './perf.less';
+  import Styles from './perf.module.less';
 
-  let stats = null;
+  export let stats = null;
+
   let statsFrame = null;
+  export const panels: Record<string, Stats.Panel> = {};
 
   onMount(() => {
-    Style.use();
+    Styles.use();
   });
 
   onDestroy(() => {
-    Style.unuse();
+    Styles.unuse();
   });
+
+  // css Module
+  const stylesModule = Styles.locals;
 
   const dispatch = createEventDispatcher();
 
@@ -22,10 +27,17 @@
       cancelAnimationFrame(statsFrame);
       stats.dom.parentNode.removeChild(stats.dom);
       stats = null;
+      panels.messageChannel = null;
     } else {
       stats = new Stats();
+      // message channel 统计消息通道的耗时
+      const MC = new Stats.Panel('MC', '#a9f', '#002');
+      stats.addPanel(MC);
+      panels.messageChannel = MC;
+
       stats.showPanel(0);
       const isMobile = 'ontouchstart' in window;
+
       if (isMobile) {
         let startX = 0;
         let startY = 0;
@@ -74,13 +86,13 @@
     } else {
       ev = new Event('vconsole_log_restore', { bubbles: true });
     }
-    console.warn('Toggle log');
+    console.warn('[vConsole] Toggle log');
     document.dispatchEvent(ev);
     dispatch('log_toggle', { pause: isPauseLog });
   }
 </script>
 
-<div class="wrapper">
-  <button class="btn" on:click={openStats}>{stats ? 'Close' : 'Open'} FPS monitor</button>
-  <button class="btn" on:click={toggleLog}>Toggle log</button>
+<div class={stylesModule.wrapper}>
+  <button class={stylesModule.btn} on:click={openStats}>{stats ? 'Close' : 'Open'} FPS monitor</button>
+  <button class={stylesModule.btn} on:click={toggleLog}>Toggle log</button>
 </div>
