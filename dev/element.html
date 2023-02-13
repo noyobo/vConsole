@@ -45,6 +45,28 @@
     });
 
     vConsole.show();
+
+    setTimeout(() => {
+      let messageBytes
+      let MaxKb = 0;
+
+      setInterval(() => {
+        if(!messageBytes) {
+          messageBytes = messageBytes = vConsole.pluginList['perf'].compInstance.panels.messageBytes;
+        }
+        if (messageBytes) {
+          const message = '1234567890'.repeat(1);
+          // string length to bytes
+          const len = encodeURI(message).split(/%..|./).length - 1;
+          const bytes = len * 2;
+          const kb = bytes / 1024;
+          if (kb > MaxKb) {
+            MaxKb = kb;
+          }
+          messageBytes.update(kb, Math.max(MaxKb, kb));
+        }
+      }, 50)
+    }, 1000);
   </script>
 
   <script>

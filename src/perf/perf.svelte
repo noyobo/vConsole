@@ -28,12 +28,16 @@
       stats.dom.parentNode.removeChild(stats.dom);
       stats = null;
       panels.messageTime = null;
+      panels.messageBytes = null;
     } else {
       stats = new Stats();
       // message channel 统计消息通道的耗时
       const messageTime = new Stats.Panel('MT', '#a9f', '#002');
       stats.addPanel(messageTime);
       panels.messageTime = messageTime;
+      const messageBytes = new Stats.Panel('KB', '#ee20a9', '#002');
+      stats.addPanel(messageBytes);
+      panels.messageBytes = messageBytes;
 
       stats.showPanel(0);
       const isMobile = 'ontouchstart' in window;
