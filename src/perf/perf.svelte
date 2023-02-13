@@ -27,13 +27,13 @@
       cancelAnimationFrame(statsFrame);
       stats.dom.parentNode.removeChild(stats.dom);
       stats = null;
-      panels.messageChannel = null;
+      panels.messageTime = null;
     } else {
       stats = new Stats();
       // message channel 统计消息通道的耗时
-      const MC = new Stats.Panel('MC', '#a9f', '#002');
-      stats.addPanel(MC);
-      panels.messageChannel = MC;
+      const messageTime = new Stats.Panel('MT', '#a9f', '#002');
+      stats.addPanel(messageTime);
+      panels.messageTime = messageTime;
 
       stats.showPanel(0);
       const isMobile = 'ontouchstart' in window;

@@ -124,10 +124,10 @@
 
       const prefPlugin = vConsole.pluginList['perf'];
 
-      if (prefPlugin && prefPlugin.compInstance.panels.messageChannel) {
-        const panel = prefPlugin.compInstance.panels.messageChannel;
+      if (prefPlugin && prefPlugin.compInstance.panels.messageTime) {
+        const panel = prefPlugin.compInstance.panels.messageTime;
         function loop() {
-          panel.update(Math.floor(Math.random() * 1000), 1000);
+          panel.update(Math.floor(Math.random() * 1500), 2000);
           requestAnimationFrame(loop);
         }
         loop();
