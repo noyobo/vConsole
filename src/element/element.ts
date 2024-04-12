@@ -2,8 +2,8 @@ import MutationObserver from 'mutation-observer';
 import { get } from 'svelte/store';
 import { VConsoleSveltePlugin } from '../lib/sveltePlugin';
 import ElementComp from './element.svelte';
-import { rootNode, activedNode } from './element.model';
 import type { IVConsoleNode } from './element.model';
+import { activedNode, rootNode } from './element.model';
 
 function uniqueArray(arr: any[]) {
   return Array.from(new Set(arr));
@@ -16,6 +16,7 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
   protected isInited = false;
   protected observer: MutationObserver;
   protected nodeMap: WeakMap<Node, IVConsoleNode>;
+
   // protected activedNode: IVConsoleNode;
 
   constructor(id: string, name: string, renderProps = {}) {
@@ -239,8 +240,8 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
         const childNode = <HTMLElement>elem.childNodes[i];
 
         // 过滤掉隐藏的节点
-        if(childNode && childNode.nodeType === 1) {
-          if (childNode.hasAttribute('meta:vc-hide') || childNode.tagName === 'SCRIPT')  continue;
+        if (childNode && childNode.nodeType === 1) {
+          if (childNode.hasAttribute('meta:vc-hide') || childNode.tagName === 'SCRIPT') continue;
         }
 
         const child = this._generateVNode(elem.childNodes[i]);
@@ -271,10 +272,17 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
       node.className = elem.className || '';
       // attrs
       if (elem.hasAttributes && elem.hasAttributes()) {
-        node.attributes = [];
+        const nodeAttributes = {};
+
+        let sortAttributes = [];
+
         for (let i = 0; i < elem.attributes.length; i++) {
-          const name = elem.attributes[i].name;
+          let name = elem.attributes[i].name;
           let value = elem.attributes[i].value;
+
+          if (value) {
+            value = value.trim();
+          }
 
           if (name === 'meta:vc-node') {
             node._isHide = true;
@@ -282,16 +290,30 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
           if (name === 'meta:vc-space') {
             node._isSpace = true;
           }
-
-          if (name === 'class') {
-            const metaClass = elem.getAttribute('meta:class');
-            // 对于 class，如果有 meta:class，则使用 meta:class
-            if (metaClass) {
-              value = metaClass;
-            }
+          if (name === 'meta:tag') {
+            node.nodeName = value;
           }
-          node.attributes.push({ name: name, value: value || '' });
+          if (['meta:vc-node', 'meta:vc-space', 'meta:uid', 'meta:patch-hash', 'meta:class-prefix', 'meta:tag'].includes(name)) {
+            continue;
+          }
+          sortAttributes.push({ name, value });
         }
+
+        sortAttributes = sortAttributes.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        }).sort((a, b) => {
+          if (a.name.startsWith('meta:')) return 1;
+          return 0;
+        });
+
+        for (const attr of sortAttributes) {
+          const name = attr.name.startsWith('meta:') ? attr.name.substring(5) : attr.name;
+          if (attr.value !== '') {
+            nodeAttributes[name] = { name, value: attr.value };
+          }
+        }
+
+        node.attributes = Object.values(nodeAttributes);
       }
     }
   }

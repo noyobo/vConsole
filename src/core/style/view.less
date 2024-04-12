@@ -36,7 +36,16 @@
   transition: bottom 0.3s;
 }
 
+
 .vc-toggle {
+  &.vc-actived {
+    border-left: 1px dashed #d2d2d2;
+
+    > .vc-toggle {
+      border-left: 1px dashed #d2d2d2;
+    }
+  }
+
   .vc-switch {
     display: none;
   }
@@ -67,20 +76,25 @@
   margin-bottom: constant(safe-area-inset-bottom);
   margin-bottom: env(safe-area-inset-bottom);
 }
+
 .vc-content.vc-has-topbar {
   top: (71em / @font);
 }
+
 .vc-plugin-box {
   display: none;
   position: relative;
   min-height: 100%;
 }
+
 .vc-plugin-box.vc-fixed-height {
   height: 100%;
 }
+
 .vc-plugin-box.vc-actived {
   display: block;
 }
+
 .vc-plugin-content {
   display: flex;
   width: 100%;
@@ -89,6 +103,7 @@
   flex-direction: column;
   -webkit-tap-highlight-color: transparent;
 }
+
 .vc-plugin-content:empty:before {
   content: 'Empty';
   color: var(--VC-FG-1);

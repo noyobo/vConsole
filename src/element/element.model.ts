@@ -9,6 +9,7 @@ export interface IVConsoleNode {
   className: typeof Element.prototype.className;
   attributes: { [name: string]: string }[];
   childNodes: IVConsoleNode[];
+
   _isHide?: boolean;
   _isSpace?: boolean;
   _isExpand?: boolean;

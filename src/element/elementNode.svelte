@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount, onDestroy, createEventDispatcher } from 'svelte';
-  import { activedNode } from './element.model';
+  import { createEventDispatcher, onDestroy, onMount } from 'svelte';
   import type { IVConsoleNode } from './element.model';
+  import { activedNode } from './element.model';
   import Style from './elementNode.less';
 
   /*************************************
@@ -65,23 +65,5 @@
     class:vc-actived={node._isActived}
     class:vc-toggle={node._isExpand}
     class:vcelm-noc={node._isSingleLine || node._isHide}
-  >
-    {#if node._isHide}{#each node.childNodes as childNode}<svelte:self
-          node={childNode}
-        />{/each}{:else if node.nodeType === Node['ELEMENT_NODE']}<span class="vcelm-node" on:click={onTapNode}
-        >&lt;{node.nodeName}{#if node.className || node.attributes.length}<i class="vcelm-k"
-            >{#each node.attributes as attr}{#if attr.name.indexOf('meta:') == -1}&nbsp;{#if attr.value !== ''}{attr.name}="<i
-                    class="vcelm-v">{attr.value}</i
-                  >"{:else}{attr.name}{/if}{:else if /^meta\:(mut-|capture-)?(bind|catch)/.test(attr.name)}&nbsp;{attr.name.substring(
-                  5
-                )}="<i class="vcelm-v">{attr.value}</i>"{/if}{/each}</i
-          >{/if}{#if node._isNullEndTag}/{/if}&gt;</span
-      >{#if node.childNodes.length > 0}{#if !node._isExpand}...{:else}{#each node.childNodes as childNode}<svelte:self
-              node={childNode}
-              on:toggleNode
-            />{/each}{/if}{/if}{#if !node._isNullEndTag}<span class="vcelm-node">&lt;/{node.nodeName}&gt;</span
-        >{/if}{:else if node.nodeType === Node['TEXT_NODE']}<span class="vcelm-t vcelm-noc"
-        >{trim(node.textContent)}</span
-      >{/if}
-  </div>
+  >{#if node._isHide}{#each node.childNodes as childNode}<svelte:self node={childNode} />{/each}{:else if node.nodeType === Node['ELEMENT_NODE']}<span class="vcelm-node" on:click={onTapNode}><i class="vcelm-n">{`<${node.nodeName}`}</i>{#if node.className || node.attributes.length}<i class="vcelm-k">{#each node.attributes as attr}{#if attr.value !== ''}<i class="vcelm-n">&nbsp;{attr.name}="<i class="vcelm-v">{attr.value}</i>"</i>{:else}{attr.name}{/if}{/each}</i>{/if}{#if node._isNullEndTag}/{/if}&gt;</span>{#if node.childNodes.length > 0}{#if !node._isExpand}...{:else}{#each node.childNodes as childNode}<svelte:self node={childNode} on:toggleNode />{/each}{/if}{/if}{#if !node._isNullEndTag}<span class="vcelm-node">&lt;/{node.nodeName}&gt;</span>{/if}{:else if node.nodeType === Node['TEXT_NODE']}<span class="vcelm-t vcelm-noc">{trim(node.textContent)}</span>{/if}</div>
 {/if}

@@ -1,6 +1,6 @@
 {
   "name": "@noyobo/vconsole",
-  "version": "3.14.7-rc.13",
+  "version": "3.14.7-rc.15",
   "description": "A lightweight, extendable front-end developer tool for mobile web page.",
   "homepage": "https://github.com/noyobo/vConsole",
   "files": [
@@ -13,7 +13,7 @@
   "typings": "dist/vconsole.min.d.ts",
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.com/"
   },
   "scripts": {
     "build": "webpack --mode=production --progress --env target=web",
