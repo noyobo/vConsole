@@ -310,6 +310,11 @@ export class VConsoleElementPlugin extends VConsoleSveltePlugin {
           const name = attr.name.startsWith('meta:') ? attr.name.substring(5) : attr.name;
           if (attr.value !== '') {
             nodeAttributes[name] = { name, value: attr.value };
+          } else {
+            if (['style', 'class', 'id', 'hover-class'].includes('name')) {
+              continue;
+            }
+            nodeAttributes[name] = { name, value: '' };
           }
         }
 
