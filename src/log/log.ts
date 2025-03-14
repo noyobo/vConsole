@@ -24,7 +24,7 @@ export class VConsoleLogPlugin extends VConsoleSveltePlugin {
   public onReady() {
     super.onReady();
     this.model.maxLogNumber = Number(this.vConsole.option.log?.maxLogNumber) || MAX_LOG_NUMBER;
-    this.model.evalCommand = this.vConsole.option.log.evalCommand || undefined
+    this.model.runCommand = this.vConsole.option.log.runCommand || undefined
     this.compInstance.showTimestamps = !!this.vConsole.option.log?.showTimestamps;
   }
 
