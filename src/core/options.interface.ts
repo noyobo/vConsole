@@ -1,6 +1,7 @@
 export interface VConsoleLogOptions {
   maxLogNumber?: number;
   showTimestamps?: boolean;
+  evalCommand?: (cmd: string) => void;
 }
 
 export interface VConsoleNetworkOptions {

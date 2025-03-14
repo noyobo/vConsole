@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>vConsole: Common</title>
-  <link href="./lib/weui.min.css" rel="stylesheet"/>
-  <link href="./lib/demo.css" rel="stylesheet"/>
+  <link href="./lib/weui.min.css" rel="stylesheet" />
+  <link href="./lib/demo.css" rel="stylesheet" />
 </head>
 <body ontouchstart>
   <div id="page" class="page">
@@ -33,19 +33,27 @@ window.vConsole = new window.VConsole({
   // disableLogScrolling: true,
   // theme: 'dark',
   // pluginOrder: ['network'],
-  onReady: function() {
+  onReady: function () {
     console.log('vConsole: onReady');
   },
-  onClearLog: function() {
+  onClearLog: function () {
     console.log('vConsole: onClearLog');
   },
+  log: {
+    evalCommand: function (command) {
+      console.log('vConsole: evalCommand', command);
+    }
+  }
 });
 </script>
 
 <script>
 class FooClass {
-  constructor() { this.foo = 'bar'; }
+  constructor() {
+    this.foo = 'bar';
+  }
 }
+
 function outputLogs() {
   const obj = {
     number: 233,
@@ -53,12 +61,14 @@ function outputLogs() {
     boolean: true,
     symbolValue: Symbol('foo'),
     bigint: 98979695949n,
-    obj: {foo: 'bar'},
+    obj: { foo: 'bar' },
     array: [8, 7, 6],
     undefined: undefined,
-    func: function foo(a) { alert('b'); },
+    func: function foo(a) {
+      alert('b');
+    },
     class: FooClass,
-    classInstance: new FooClass(),
+    classInstance: new FooClass()
   };
   obj[Symbol('symbolKey')] = 'The key is a symbol.';
   console.log('A common object:', obj);
@@ -77,6 +87,7 @@ function toggleVConsole() {
 }
 
 let showSwitch = true;
+
 function toggleSwitch() {
   showSwitch = !showSwitch;
   showSwitch ? window.vConsole.showSwitch() : window.vConsole.hideSwitch();
@@ -91,12 +102,14 @@ function switchPosition() {
 function setOption() {
   vConsole.setOption('log.a.maxLogNumber', 20);
   vConsole.setOption('log.maxLogNumber', 20);
-  vConsole.setOption({ network: { maxNetworkNumber: 30 }});
-  vConsole.setOption({ network: { b: 123 }}); // overwrite previous line
-  vConsole.setOption({ '__proto__': { a: 1 }, 'prototype': { b: 2 }, 'constructor': 3 });
+  vConsole.setOption({ network: { maxNetworkNumber: 30 } });
+  vConsole.setOption({ network: { b: 123 } }); // overwrite previous line
+  vConsole.setOption({ __proto__: { a: 1 }, prototype: { b: 2 }, constructor: 3 });
   vConsole.setOption('__proto__.noOrig', 1);
   vConsole.setOption('prototype.noOrig', 2);
-  vConsole.setOption('constructor', () => { console.log('hack') });
+  vConsole.setOption('constructor', () => {
+    console.log('hack');
+  });
   vConsole.setOption('log.__proto__.noOrig', 1);
   console.log(vConsole.option);
 }
@@ -105,7 +118,7 @@ function newVConsole() {
   const vc = new window.VConsole();
   window.vConsole = vc;
   console.log('newVConsole:', vc);
-  console.log('VConsole.instance:',  window.VConsole.instance === vc, window.VConsole.instance);
+  console.log('VConsole.instance:', window.VConsole.instance === vc, window.VConsole.instance);
 }
 
 function destroy() {

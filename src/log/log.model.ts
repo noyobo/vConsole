@@ -38,7 +38,6 @@ export interface IVConsoleAddLogOptions {
   cmdType?: 'input' | 'output';
 }
 
-
 /**********************************
  * Model
  **********************************/
@@ -47,6 +46,7 @@ export class VConsoleLogModel extends VConsoleModel {
   public readonly LOG_METHODS: IConsoleLogMethod[] = ['log', 'info', 'warn', 'debug', 'error'];
   public ADDED_LOG_PLUGIN_ID: string[] = [];
   public maxLogNumber: number = 1000;
+  public evalCommand: (cmd: string) => void;
   protected logCounter: number = 0; // a counter used to do some tasks on a regular basis
   protected groupLevel: number = 0; // for `console.group()`
   protected groupLabelCollapsedStack: { label: symbol; collapsed: boolean; args?: any[] }[] = [];
@@ -327,21 +327,25 @@ export class VConsoleLogModel extends VConsoleModel {
 
     let result = void 0;
 
-    try {
-      result = eval.call(window, '(' + cmd + ')');
-    } catch (e) {
+    if ('function' === typeof this.evalCommand) {
+      this.evalCommand(cmd);
+    } else {
       try {
-        result = eval.call(window, cmd);
-      } catch (e) { }
-    }
+        result = eval.call(window, '(' + cmd + ')');
+      } catch (e) {
+        try {
+          result = eval.call(window, cmd);
+        } catch (e) {}
+      }
 
-    this.addLog(
-      {
-        type: 'log',
-        origData: [result]
-      },
-      { cmdType: 'output' }
-    );
+      this.addLog(
+        {
+          type: 'log',
+          origData: [result]
+        },
+        { cmdType: 'output' }
+      );
+    }
   }
 
   protected _signalLog(log: IVConsoleLog) {
