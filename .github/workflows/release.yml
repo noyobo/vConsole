@@ -1,0 +1,46 @@
+name: npm-publish
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Semantic version (major | minor | patch | premajor | preminor | prepatch | prerelease)'
+        default: 'patch'
+        required: true
+jobs:
+  publish:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Setup npm account
+        run: |
+          echo "//registry.npmjs.com/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+          npm whoami
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Yarn install
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Make build
+        run: |
+          yarn run build
+
+      - name: Versioning
+        run: |
+          npm version prerelease --preid=rc
+
+      - name: Publish to npm
+        run: |
+          npm publish --access public
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
