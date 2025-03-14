@@ -2,6 +2,7 @@ export interface VConsoleLogOptions {
   maxLogNumber?: number;
   showTimestamps?: boolean;
   runCommand?: (cmd: string) => void;
+  commandPromptContext?: Record<string, any>
 }
 
 export interface VConsoleNetworkOptions {

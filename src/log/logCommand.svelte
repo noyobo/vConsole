@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { onMount, onDestroy, createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onDestroy, onMount } from 'svelte';
   import Icon from '../component/icon/icon.svelte';
   import { getLastIdentifier } from './logTool';
   import { VConsoleLogModel } from './log.model';
   import Style from './logCommand.less';
+  import get from 'lodash-es/get.js';
 
   interface ICmdPromptedItem {
     text: string;
@@ -61,7 +62,7 @@
   };
 
   const clearPromptedList = () => {
-    promptedStyle = 'display: none;'
+    promptedStyle = 'display: none;';
     // promptedList.length = 0;
     promptedList = [];
   };
@@ -93,7 +94,8 @@
 
     if (!cachedObjKeys[objName]) {
       try {
-        cachedObjKeys[objName] = Object.getOwnPropertyNames(eval('(' + objName + ')')).sort();
+        const target = get(module.commandPromptContext, objName);
+        cachedObjKeys[objName] = Object.keys(target).sort();
         // _console.log('cachedObjKeys', objName, keyName, cachedObjKeys[objName].length);
       } catch (e) {
         // do nothing
@@ -120,7 +122,7 @@
             }
             promptedList.push({
               text: key,
-              value: completeCmd,
+              value: completeCmd
             });
             // _console.log('text', key, 'complateCmd', completeCmd);
           }
@@ -133,7 +135,7 @@
 
     if (promptedList.length > 0) {
       const m = Math.min(200, (promptedList.length + 1) * 31);
-      promptedStyle = `display: block; height: ${m}px; margin-top: ${-m-2}px;`;
+      promptedStyle = `display: block; height: ${m}px; margin-top: ${-m - 2}px;`;
       promptedList = promptedList;
       // _console.log('promptedList:', promptedList);
     } else {
@@ -244,10 +246,10 @@
       on:blur={onCmdBlur}
     ></textarea>
     {#if cmdValue.length > 0}
-    <div class="vc-cmd-clear-btn" on:click|preventDefault={() => onTapClearText('cmd')}>
-      <Icon name="clear" />
-    </div>
-  {/if}
+      <div class="vc-cmd-clear-btn" on:click|preventDefault={() => onTapClearText('cmd')}>
+        <Icon name="clear" />
+      </div>
+    {/if}
   </div>
 
   <button class="vc-cmd-btn" type="submit">OK</button>
@@ -262,10 +264,10 @@
       bind:value={filterValue}
     ></textarea>
     {#if filterValue.length > 0}
-    <div class="vc-cmd-clear-btn" on:click|preventDefault={() => onTapClearText('filter')}>
-      <Icon name="clear" />
-    </div>
-  {/if}
+      <div class="vc-cmd-clear-btn" on:click|preventDefault={() => onTapClearText('filter')}>
+        <Icon name="clear" />
+      </div>
+    {/if}
   </div>
   <button class="vc-cmd-btn" type="submit">Filter</button>
 </form>

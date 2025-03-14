@@ -1,8 +1,8 @@
 import { VConsoleSveltePlugin } from '../lib/sveltePlugin';
 import LogComp from './log.svelte';
+import type { IConsoleLogMethod } from './log.model';
 import { VConsoleLogModel } from './log.model';
 import { VConsoleLogExporter } from './log.exporter';
-import type { IConsoleLogMethod } from './log.model';
 
 const MAX_LOG_NUMBER = 1000;
 
@@ -15,7 +15,7 @@ export class VConsoleLogPlugin extends VConsoleSveltePlugin {
   public isShow: boolean = false;
   public isInBottom: boolean = true; // whether the panel is in the bottom
 
-  constructor(id: string, name: string,) {
+  constructor(id: string, name: string) {
     super(id, name, LogComp, { pluginId: id, filterType: 'all' });
     this.model.bindPlugin(id);
     this.exporter = new VConsoleLogExporter(id);
@@ -24,7 +24,10 @@ export class VConsoleLogPlugin extends VConsoleSveltePlugin {
   public onReady() {
     super.onReady();
     this.model.maxLogNumber = Number(this.vConsole.option.log?.maxLogNumber) || MAX_LOG_NUMBER;
-    this.model.runCommand = this.vConsole.option.log.runCommand || undefined
+    this.model.runCommand = this.vConsole.option.log.runCommand || undefined;
+    if (this.vConsole.option.log.commandPromptContext) {
+      this.model.commandPromptContext = this.vConsole.option.log.commandPromptContext;
+    }
     this.compInstance.showTimestamps = !!this.vConsole.option.log?.showTimestamps;
   }
 
@@ -45,7 +48,9 @@ export class VConsoleLogPlugin extends VConsoleSveltePlugin {
         actived: i === 0,
         className: '',
         onClick: (e: PointerEvent, data: { type: 'all' | IConsoleLogMethod }) => {
-          if (data.type === this.compInstance.filterType) { return false; }
+          if (data.type === this.compInstance.filterType) {
+            return false;
+          }
           this.compInstance.filterType = data.type;
         }
       });
@@ -55,26 +60,30 @@ export class VConsoleLogPlugin extends VConsoleSveltePlugin {
   }
 
   public onAddTool(callback: Function) {
-    const toolList = [{
-      name: 'Clear',
-      global: false,
-      onClick: (e) => {
-        this.model.clearPluginLog(this.id);
-        this.vConsole.triggerEvent('clearLog');
+    const toolList = [
+      {
+        name: 'Clear',
+        global: false,
+        onClick: (e) => {
+          this.model.clearPluginLog(this.id);
+          this.vConsole.triggerEvent('clearLog');
+        }
+      },
+      {
+        name: 'Top',
+        global: false,
+        onClick: (e) => {
+          this.compInstance.scrollToTop();
+        }
+      },
+      {
+        name: 'Bottom',
+        global: false,
+        onClick: (e) => {
+          this.compInstance.scrollToBottom();
+        }
       }
-    }, {
-      name: 'Top',
-      global: false,
-      onClick: (e) => {
-        this.compInstance.scrollToTop()
-      }
-    }, {
-      name: 'Bottom',
-      global: false,
-      onClick: (e) => {
-        this.compInstance.scrollToBottom()
-      }
-    }];
+    ];
     callback(toolList);
   }
 

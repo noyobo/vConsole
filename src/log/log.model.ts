@@ -47,6 +47,7 @@ export class VConsoleLogModel extends VConsoleModel {
   public ADDED_LOG_PLUGIN_ID: string[] = [];
   public maxLogNumber: number = 1000;
   public runCommand: (cmd: string) => void;
+  public commandPromptContext: Record<string, any> = globalThis;
   protected logCounter: number = 0; // a counter used to do some tasks on a regular basis
   protected groupLevel: number = 0; // for `console.group()`
   protected groupLabelCollapsedStack: { label: symbol; collapsed: boolean; args?: any[] }[] = [];
