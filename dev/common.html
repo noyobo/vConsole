@@ -1,209 +1,212 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <title>vConsole: Common</title>
-    <link href="./lib/weui.min.css" rel="stylesheet" />
-    <link href="./lib/demo.css" rel="stylesheet" />
-  </head>
-  <body ontouchstart>
-    <div id="page" class="page">
-      <a onclick="outputLogs()" href="javascript:;" class="weui_btn weui_btn_default">Output Logs</a>
-      <a onclick="changeTheme('dark')" href="javascript:;" class="weui_btn weui_btn_default">Theme: dark</a>
-      <a onclick="changeTheme('light')" href="javascript:;" class="weui_btn weui_btn_default">Theme: light</a>
-      <a onclick="changeTheme('')" href="javascript:;" class="weui_btn weui_btn_default">Theme: auto</a>
-      <a onclick="toggleVConsole()" href="javascript:;" class="weui_btn weui_btn_default">vConsole: show/hide</a>
-      <a onclick="toggleSwitch()" href="javascript:;" class="weui_btn weui_btn_default">Switch: show/hide</a>
-      <a onclick="switchPosition()" href="javascript:;" class="weui_btn weui_btn_default">Switch: setPosition</a>
-      <a onclick="setOption()" href="javascript:;" class="weui_btn weui_btn_default">setOption</a>
-      <a onclick="destroy()" href="javascript:;" class="weui_btn weui_btn_default">Destroy</a>
-      <a onclick="newVConsole()" href="javascript:;" class="weui_btn weui_btn_default">new VConsole</a>
-      <a onclick="existingId()" href="javascript:;" class="weui_btn weui_btn_default">Existing Id</a>
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>vConsole: Common</title>
+  <link href="./lib/weui.min.css" rel="stylesheet" />
+  <link href="./lib/demo.css" rel="stylesheet" />
+</head>
+<body ontouchstart>
+<div id="page" class="page">
+  <a onclick="outputLogs()" href="javascript:;" class="weui_btn weui_btn_default">Output Logs</a>
+  <a onclick="changeTheme('dark')" href="javascript:;" class="weui_btn weui_btn_default">Theme: dark</a>
+  <a onclick="changeTheme('light')" href="javascript:;" class="weui_btn weui_btn_default">Theme: light</a>
+  <a onclick="changeTheme('')" href="javascript:;" class="weui_btn weui_btn_default">Theme: auto</a>
+  <a onclick="toggleVConsole()" href="javascript:;" class="weui_btn weui_btn_default">vConsole: show/hide</a>
+  <a onclick="toggleSwitch()" href="javascript:;" class="weui_btn weui_btn_default">Switch: show/hide</a>
+  <a onclick="switchPosition()" href="javascript:;" class="weui_btn weui_btn_default">Switch: setPosition</a>
+  <a onclick="setOption()" href="javascript:;" class="weui_btn weui_btn_default">setOption</a>
+  <a onclick="destroy()" href="javascript:;" class="weui_btn weui_btn_default">Destroy</a>
+  <a onclick="newVConsole()" href="javascript:;" class="weui_btn weui_btn_default">new VConsole</a>
+  <a onclick="existingId()" href="javascript:;" class="weui_btn weui_btn_default">Existing Id</a>
+</div>
+</body>
 </html>
 
 <script type="module">
   import '../dist/vconsole.min.js';
 
+  const noop = () => {};
+  const tyObj = {
+    getThemeInfo: noop,
+    getRegionCode: noop,
+    getStorage: noop,
+    getStorageSync: noop,
+    getSystemInfoSync: noop,
+    getSystemInfo: noop,
+    getRealtimeLogManager: noop,
+    getAppCommonData: noop,
+    getSmartCsUrl: noop,
+    getAllLanguages: noop,
+    getAssetHostname: noop,
+    getAstronomicalList: noop,
+    getBasketList: noop,
+    getBasketStatus: noop,
+    getBindRuleList: noop,
+    getCleaningRecords: noop,
+    getCookingTimeCondition: noop,
+    getCreatePasswordSN: noop,
+    getCurrentMemberInfo: noop,
+    getCustomRecipeList: noop,
+    getCustomizePosition: noop,
+    getDataWithSpecified: noop,
+    getDevAlarmList: noop,
+    getDevProperty: noop,
+    getDeviceProperties: noop,
+    getDpAllStatistResult: noop,
+    getDpLastTimer: noop,
+    getDpLogDays: noop,
+    getDpReportLog: noop,
+    getDpResultByHour: noop,
+    getDpResultByMonth: noop,
+    getDpsInfos: noop,
+    getDpsLastTimer: noop,
+    getDynamicPassword: noop,
+    getFamilyMemberListWithUnlockCount: noop,
+    getGroupDpsInfos: noop,
+    getGyroCleanRecordDetail: noop,
+    getGyroCleanRecords: noop,
+    getGyroLatestCleanMap: noop,
+    getInvalidAuthList: noop,
+    getLastTimerPeriod: noop,
+    getLatestLog: noop,
+    getLatestUnlockRecord: noop,
+    getLightHighPower: noop,
+    getLinkageDeviceList: noop,
+    getLockActivePeriod: noop,
+    getLockAuthList: noop,
+    getLockLatestLog: noop,
+    getLockMemberInfo: noop,
+    getLogInSpecifiedTime: noop,
+    getLogUserAction: noop,
+    getMemberList: noop,
+    getMonthWithSpecified: noop,
+    getMultiDpsAllResult: noop,
+    getMultipleMapFiles: noop,
+    getNutritionOfBasket: noop,
+    getOfflinePassword: noop,
+    getOutdoorDeviceIcon: noop,
+    getRecipeCategoryList: noop,
+    getRecipeCollectionList: noop,
+    getRecipeDetail: noop,
+    getRecipeList: noop,
+    getRecipePrimaryCategoryList: noop,
+    getRecipeScoreByMenuId: noop,
+    getRecipeScoresByMenuIds: noop,
+    getRecipeStarCount: noop,
+    getRemoteLocalRelation: noop,
+    getRevocableOfflinePasswords: noop,
+    getSceneList: noop,
+    getSceneListV2: noop,
+    getSearchHistoryList: noop,
+    getSearchModel: noop,
+    getSweeperStorageConfig: noop,
+    getUiConfig: noop,
+    getUnlockMethodDetail: noop,
+    getUnlockMethodList: noop,
+    getUserRegion: noop,
+    getVoiceList: noop,
+    getWeatherQuality: noop,
+    getWeathers: noop,
+    getWeekWithSpecified: noop,
+    getZigbeeLocalGroupDeviceList: noop,
+    getZigbeeLocalGroupRelation: noop,
+    getStatisticsConfig: noop,
+    getStatisticsRang15min: noop,
+    getStatisticsRangHour: noop,
+    getStatisticsRangDay: noop,
+    getStatisticsRangMonth: noop,
+    getAnalyticsLogsPublishLog: noop,
+    getAnalyticsLogsStatusLog: noop,
+    getLightLibrariesData: noop,
+    getLightLibrariesDataTypes: noop,
+    getLightRhythmsTimeInfo: noop,
+    getLightRhythmsCityInfo: noop,
+    getOutdoorsTracksDetail: noop,
+    getOutdoorsTracksLocation: noop,
+    getOutdoorsTracksSegments: noop,
+    getWeatherDailyHistory: noop,
+    getPermissionConfigSync: noop,
+    getPermissionConfig: noop,
+    getLaunchOptionsSync: noop,
+    getLaunchOptions: noop,
+    getEnterOptionsSync: noop,
+    getEnterOptions: noop,
+    getMenuButtonBoundingClientRectSync: noop,
+    getMenuButtonBoundingClientRect: noop,
+    getAccountInfoSync: noop,
+    getAccountInfo: noop,
+    getMiniAppConfigSync: noop,
+    getMiniAppConfig: noop,
+    getAIAssistantHistory: noop,
+    getAIAssistantGroupHistory: noop,
+    getAIAssistantRequestIdSync: noop,
+    getAIAssistantRequestId: noop,
+    getSpeechDisplayType: noop,
+    getSingleAIAssistant: noop,
+    getAsrListenerManager: noop,
+    getAppInfo: noop,
+    getCurrentWifiSSID: noop,
+    getNGConfigByKeys: noop,
+    getConfigByKeys: noop,
+    getThirdPartyServiceInfo: noop,
+    getCloudEnv: noop,
+    getAppTabInfo: noop,
+    getIconfontInfo: noop,
+    getDebugLangCodes: noop,
+    getLangKey: noop,
+    getLangContent: noop,
+    getLogManager: noop,
+    getNgRawData: noop,
+    getOnlineCustomerService: noop,
+    getIapInfo: noop,
+    getShareChannelList: noop,
+    getUserInfo: noop,
+    getWebSocketStatusSync: noop,
+    getWebSocketStatus: noop,
+    getAudioFileDuration: noop,
+    getSetting: noop,
+    getTempDirectory: noop,
+    getFileInfo: noop,
+    getFileSystemManager: noop,
+    getImageInfo: noop,
+    getVideoInfo: noop,
+    getClipboardData: noop,
+    getCurrentVolume: noop,
+    getCurrentVolumeByMode: noop,
+    getSystemSetting: noop,
+    getDeviceInfo: noop,
+    getWifiList: noop,
+    getConnectedWifi: noop,
+    getAppAuthorizeSetting: noop,
+    getNetworkType: noop,
+    getScreenBrightness: noop,
+    getRecorderManager: 1
+  };
   window.vConsole = new window.VConsole({
     // maxLogNumber: 1000,
     // disableLogScrolling: true,
     // theme: 'dark',
     // pluginOrder: ['network'],
-    onReady: function () {
+    onReady: function() {
       console.log('vConsole: onReady');
     },
-    onClearLog: function () {
+    onClearLog: function() {
       console.log('vConsole: onClearLog');
     },
     log: {
-      runCommand: function (command) {
+      runCommand: function(command) {
         console.log('vConsole: evalCommand', command);
       },
       commandPromptContext: {
         window: {
-          getCurrentPages: 1,
-          getApp: 1
+          getCurrentPages: noop,
+          getApp: noop,
+          ty: tyObj
         },
-        ty: {
-          getThemeInfo: 1,
-          getRegionCode: 1,
-          getStorage: 1,
-          getStorageSync: 1,
-          getSystemInfoSync: 1,
-          getSystemInfo: 1,
-          getRealtimeLogManager: 1,
-          getAppCommonData: 1,
-          getSmartCsUrl: 1,
-          getAllLanguages: 1,
-          getAssetHostname: 1,
-          getAstronomicalList: 1,
-          getBasketList: 1,
-          getBasketStatus: 1,
-          getBindRuleList: 1,
-          getCleaningRecords: 1,
-          getCookingTimeCondition: 1,
-          getCreatePasswordSN: 1,
-          getCurrentMemberInfo: 1,
-          getCustomRecipeList: 1,
-          getCustomizePosition: 1,
-          getDataWithSpecified: 1,
-          getDevAlarmList: 1,
-          getDevProperty: 1,
-          getDeviceProperties: 1,
-          getDpAllStatistResult: 1,
-          getDpLastTimer: 1,
-          getDpLogDays: 1,
-          getDpReportLog: 1,
-          getDpResultByHour: 1,
-          getDpResultByMonth: 1,
-          getDpsInfos: 1,
-          getDpsLastTimer: 1,
-          getDynamicPassword: 1,
-          getFamilyMemberListWithUnlockCount: 1,
-          getGroupDpsInfos: 1,
-          getGyroCleanRecordDetail: 1,
-          getGyroCleanRecords: 1,
-          getGyroLatestCleanMap: 1,
-          getInvalidAuthList: 1,
-          getLastTimerPeriod: 1,
-          getLatestLog: 1,
-          getLatestUnlockRecord: 1,
-          getLightHighPower: 1,
-          getLinkageDeviceList: 1,
-          getLockActivePeriod: 1,
-          getLockAuthList: 1,
-          getLockLatestLog: 1,
-          getLockMemberInfo: 1,
-          getLogInSpecifiedTime: 1,
-          getLogUserAction: 1,
-          getMemberList: 1,
-          getMonthWithSpecified: 1,
-          getMultiDpsAllResult: 1,
-          getMultipleMapFiles: 1,
-          getNutritionOfBasket: 1,
-          getOfflinePassword: 1,
-          getOutdoorDeviceIcon: 1,
-          getRecipeCategoryList: 1,
-          getRecipeCollectionList: 1,
-          getRecipeDetail: 1,
-          getRecipeList: 1,
-          getRecipePrimaryCategoryList: 1,
-          getRecipeScoreByMenuId: 1,
-          getRecipeScoresByMenuIds: 1,
-          getRecipeStarCount: 1,
-          getRemoteLocalRelation: 1,
-          getRevocableOfflinePasswords: 1,
-          getSceneList: 1,
-          getSceneListV2: 1,
-          getSearchHistoryList: 1,
-          getSearchModel: 1,
-          getSweeperStorageConfig: 1,
-          getUiConfig: 1,
-          getUnlockMethodDetail: 1,
-          getUnlockMethodList: 1,
-          getUserRegion: 1,
-          getVoiceList: 1,
-          getWeatherQuality: 1,
-          getWeathers: 1,
-          getWeekWithSpecified: 1,
-          getZigbeeLocalGroupDeviceList: 1,
-          getZigbeeLocalGroupRelation: 1,
-          getStatisticsConfig: 1,
-          getStatisticsRang15min: 1,
-          getStatisticsRangHour: 1,
-          getStatisticsRangDay: 1,
-          getStatisticsRangMonth: 1,
-          getAnalyticsLogsPublishLog: 1,
-          getAnalyticsLogsStatusLog: 1,
-          getLightLibrariesData: 1,
-          getLightLibrariesDataTypes: 1,
-          getLightRhythmsTimeInfo: 1,
-          getLightRhythmsCityInfo: 1,
-          getOutdoorsTracksDetail: 1,
-          getOutdoorsTracksLocation: 1,
-          getOutdoorsTracksSegments: 1,
-          getWeatherDailyHistory: 1,
-          getPermissionConfigSync: 1,
-          getPermissionConfig: 1,
-          getLaunchOptionsSync: 1,
-          getLaunchOptions: 1,
-          getEnterOptionsSync: 1,
-          getEnterOptions: 1,
-          getMenuButtonBoundingClientRectSync: 1,
-          getMenuButtonBoundingClientRect: 1,
-          getAccountInfoSync: 1,
-          getAccountInfo: 1,
-          getMiniAppConfigSync: 1,
-          getMiniAppConfig: 1,
-          getAIAssistantHistory: 1,
-          getAIAssistantGroupHistory: 1,
-          getAIAssistantRequestIdSync: 1,
-          getAIAssistantRequestId: 1,
-          getSpeechDisplayType: 1,
-          getSingleAIAssistant: 1,
-          getAsrListenerManager: 1,
-          getAppInfo: 1,
-          getCurrentWifiSSID: 1,
-          getNGConfigByKeys: 1,
-          getConfigByKeys: 1,
-          getThirdPartyServiceInfo: 1,
-          getCloudEnv: 1,
-          getAppTabInfo: 1,
-          getIconfontInfo: 1,
-          getDebugLangCodes: 1,
-          getLangKey: 1,
-          getLangContent: 1,
-          getLogManager: 1,
-          getNgRawData: 1,
-          getOnlineCustomerService: 1,
-          getIapInfo: 1,
-          getShareChannelList: 1,
-          getUserInfo: 1,
-          getWebSocketStatusSync: 1,
-          getWebSocketStatus: 1,
-          getAudioFileDuration: 1,
-          getSetting: 1,
-          getTempDirectory: 1,
-          getFileInfo: 1,
-          getFileSystemManager: 1,
-          getImageInfo: 1,
-          getVideoInfo: 1,
-          getClipboardData: 1,
-          getCurrentVolume: 1,
-          getCurrentVolumeByMode: 1,
-          getSystemSetting: 1,
-          getDeviceInfo: 1,
-          getWifiList: 1,
-          getConnectedWifi: 1,
-          getAppAuthorizeSetting: 1,
-          getNetworkType: 1,
-          getScreenBrightness: 1,
-          getRecorderManager: 1
-        }
+        ty: tyObj
       }
     }
   });

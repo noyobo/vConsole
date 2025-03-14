@@ -185,7 +185,8 @@
   const onTapPromptedItem = (item: ICmdPromptedItem) => {
     let type = '';
     try {
-      type = eval('typeof ' + item.value);
+      const value = get(module.commandPromptContext, item.value);
+      type = typeof value
     } catch (e) {
       // do nothing
     }
